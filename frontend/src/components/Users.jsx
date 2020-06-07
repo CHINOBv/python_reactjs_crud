@@ -8,11 +8,7 @@ const Users = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Password_Rep, setPassword_Rep] = useState("");
-  
-  const [BtnEdit, setBtnEdit] = useState({
-    name:"Create",
-    color:"primary"
-  });
+
   const [Editing, setEditing] = useState(false);
   const [ID, setID] = useState("");
   const [users, setUsers] = useState([]);
@@ -49,7 +45,7 @@ const Users = () => {
       setError({
         status: true,
         type: "",
-        disabled:true,
+        disabled: true,
         msg: "All Fields Are Required",
       });
       return;
@@ -61,8 +57,7 @@ const Users = () => {
     e.preventDefault();
 
     if (Error.status) return;
-    if(!Editing){
-      
+    if (!Editing) {
       let res = await axios(`${API}/users`, {
         method: "POST",
         data: {
@@ -88,22 +83,23 @@ const Users = () => {
       setTimeout(() => {
         setAlert({});
       }, 5000);
-    }else {
-      
+    } else {
       await axios(`${API}/users/${ID}`, {
         method: "PUT",
         data: {
           name,
           email,
-          password
-        }
-      }).then(()=> {setEditing(false)});
+          password,
+        },
+      }).then(() => {
+        setEditing(false);
+        setID("");
+      });
       setAlert({
         status: true,
         color: "success",
         msg: "User Updated",
       });
-      setBtnEdit({name: "Create", color: "primary"});
     }
     await getUsers();
   };
@@ -140,17 +136,13 @@ const Users = () => {
     }, 5000);
   };
 
-  const editUser = async(id) => {
+  const editUser = async (id) => {
     let Ruser = await axios(`${API}/user/${id}`);
     let user = Ruser.data;
-    console.log(user);
+    //console.log(user);
 
     setEditing(true);
     setID(id);
-    setBtnEdit({
-      name:"Edit",
-      color: "success"
-    })
 
     setName(user.name);
     setEmail(user.email);
@@ -221,8 +213,8 @@ const Users = () => {
           <input
             disabled={Error.disabled}
             type="submit"
-            value={BtnEdit.name}
-            className={`btn btn-${BtnEdit.color} btn-block`}
+            value={Editing ? "Edit" : "Create"}
+            className={`btn btn-${Editing ? "success" : "primary"} btn-block`}
           />
         </form>
       </div>
@@ -259,7 +251,7 @@ const Users = () => {
                 <td>{user.email}</td>
                 <td>{user.password}</td>
                 <td>
-                  <button 
+                  <button
                     className="btn btn-ligth btn-sm btn-block border border-primary"
                     onClick={() => editUser(user._id)}
                   >
