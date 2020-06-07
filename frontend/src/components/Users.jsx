@@ -8,7 +8,13 @@ const Users = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Password_Rep, setPassword_Rep] = useState("");
-
+  
+  const [BtnEdit, setBtnEdit] = useState({
+    name:"Create",
+    color:"primary"
+  });
+  const [Editing, setEditing] = useState(false);
+  const [ID, setID] = useState("");
   const [users, setUsers] = useState([]);
   const [Alert, setAlert] = useState({
     status: false,
@@ -19,6 +25,7 @@ const Users = () => {
   const [Error, setError] = useState({
     status: false,
     type: "",
+    disabled: true,
     msg: "",
   });
 
@@ -41,7 +48,8 @@ const Users = () => {
     ) {
       setError({
         status: true,
-        type: "fields",
+        type: "",
+        disabled:true,
         msg: "All Fields Are Required",
       });
       return;
@@ -53,33 +61,51 @@ const Users = () => {
     e.preventDefault();
 
     if (Error.status) return;
-
-    let res = await axios(`${API}/users`, {
-      method: "POST",
-      data: {
-        name,
-        email,
-        password,
-      },
-    });
-    // console.log(res);
-    await getUsers();
-    if (!res) {
+    if(!Editing){
+      
+      let res = await axios(`${API}/users`, {
+        method: "POST",
+        data: {
+          name,
+          email,
+          password,
+        },
+      });
+      // console.log(res);
+      if (!res) {
+        setAlert({
+          status: true,
+          color: "danger",
+          msg: "An error occurred while creating the user",
+        });
+        return;
+      }
       setAlert({
         status: true,
-        color: "danger",
-        msg: "An error occurred while creating the user",
+        color: "success",
+        msg: "User Created",
       });
-      return;
+      setTimeout(() => {
+        setAlert({});
+      }, 5000);
+    }else {
+      
+      await axios(`${API}/users/${ID}`, {
+        method: "PUT",
+        data: {
+          name,
+          email,
+          password
+        }
+      }).then(()=> {setEditing(false)});
+      setAlert({
+        status: true,
+        color: "success",
+        msg: "User Updated",
+      });
+      setBtnEdit({name: "Create", color: "primary"});
     }
-    setAlert({
-      status: true,
-      color: "success",
-      msg: "User Created",
-    });
-    setTimeout(() => {
-      setAlert({});
-    }, 5000);
+    await getUsers();
   };
 
   const getUsers = async () => {
@@ -88,11 +114,13 @@ const Users = () => {
     let datas = await JSON.parse(data);
     await setUsers(datas);
     //console.log(datas)
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPassword_Rep("");
   };
 
   useEffect(() => {
-    setError({});
-
     getUsers();
   }, []);
 
@@ -110,6 +138,24 @@ const Users = () => {
     setTimeout(() => {
       setAlert({});
     }, 5000);
+  };
+
+  const editUser = async(id) => {
+    let Ruser = await axios(`${API}/user/${id}`);
+    let user = Ruser.data;
+    console.log(user);
+
+    setEditing(true);
+    setID(id);
+    setBtnEdit({
+      name:"Edit",
+      color: "success"
+    })
+
+    setName(user.name);
+    setEmail(user.email);
+    setPassword(user.password);
+    setPassword_Rep(user.password);
   };
 
   return (
@@ -173,10 +219,10 @@ const Users = () => {
             />
           </div>
           <input
-            disabled={Error.type === "fields" ? true : false}
+            disabled={Error.disabled}
             type="submit"
-            value="Create"
-            className="btn btn-primary btn-block"
+            value={BtnEdit.name}
+            className={`btn btn-${BtnEdit.color} btn-block`}
           />
         </form>
       </div>
@@ -213,7 +259,10 @@ const Users = () => {
                 <td>{user.email}</td>
                 <td>{user.password}</td>
                 <td>
-                  <button className="btn btn-ligth btn-sm btn-block border border-primary">
+                  <button 
+                    className="btn btn-ligth btn-sm btn-block border border-primary"
+                    onClick={() => editUser(user._id)}
+                  >
                     Edit
                   </button>
                   <button
