@@ -1,0 +1,12 @@
+import React from 'react'
+
+const About = () => {
+  return (
+    <>
+      <h1 className="text-center">About</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio exercitationem incidunt natus amet ut, aliquid soluta ullam veniam dicta sapiente. Aliquam, sapiente dolores officiis, vel repellat soluta dolor iste assumenda optio doloribus reiciendis, quia quas iusto mollitia accusamus quae hic suscipit velit error aliquid placeat consequuntur voluptas tenetur impedit. Dicta quidem adipisci nisi recusandae ipsa quia facilis debitis enim vero labore, nesciunt possimus inventore molestiae unde vel dolorem numquam maiores eligendi ut veniam, laborum et cumque. Possimus libero magni officiis labore fuga hic, aliquam totam illum dolores atque qui animi culpa doloribus natus a! Harum porro fugiat quaerat nesciunt ab architecto repellendus rerum facere sit impedit, similique voluptate beatae officia rem doloremque modi perferendis et? Nemo fugiat ipsam, explicabo natus fuga voluptatum ad, distinctio cum inventore soluta odio repellendus dolores cupiditate nisi. Nemo sapiente ipsam, quaerat officiis, illo harum qui, tempora commodi temporibus accusamus expedita excepturi. Quisquam at alias blanditiis aspernatur ullam, beatae amet voluptates asperiores. Vero, laudantium cupiditate! Molestiae nemo natus aut nam necessitatibus earum consequuntur, corrupti praesentium quisquam. Alias expedita reiciendis aliquam, tempora consectetur labore, quasi possimus accusamus sed hic fugiat modi excepturi debitis sunt veniam autem accusantium consequatur mollitia magni! Amet odio temporibus vitae accusamus ea, sapiente aspernatur aliquam dolores eum sit, quibusdam asperiores consectetur facere! Pariatur, repellat? Aut nisi explicabo alias sed inventore illo labore voluptatibus, vero numquam. Animi possimus veritatis odit. Sunt amet consequatur ea illo consequuntur iste praesentium veritatis quia, reprehenderit libero dolore saepe ab vel quam magnam totam repudiandae, rerum dolorem perspiciatis maxime natus iusto ipsum. Suscipit, dolore voluptatum veritatis beatae eveniet voluptas dolorum optio omnis sunt laborum molestiae. Laudantium dolorum voluptate iste amet? Beatae ipsa ad, sint itaque aspernatur hic, similique, animi aut veritatis adipisci saepe labore in dignissimos corrupti alias impedit facere dolore amet non qui? Placeat ipsum consectetur natus reprehenderit.</p>
+    </>
+  )
+}
+
+export default About
